@@ -4,7 +4,7 @@ import Head from 'next/head'
 import styles from '../styles/Home.module.scss'
 
 const apiNames = ['accounts', 'assets', 'customers', 'datapoints', 'devices', 'documents', 'forms', 'invites', 'media', 'messages', 'namespaces', 'orders', 'patients', 'relationships', 'rules', 'templates', 'users', 'workflows']
-const refreshTime = 4000
+const refreshTime = 15000
 
 export default function Home() {
   const [apiList, setApiList] = useState([])
