@@ -9,13 +9,12 @@
 
 .cardsGrid{
   justify-content: center;
-
+  width: 100%;
+  
   @media all and (min-width: 415px){
     display: flex;
+    flex-wrap: wrap;
+    box-sizing: border-box;
   }
 
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  box-sizing: border-box;
 }
