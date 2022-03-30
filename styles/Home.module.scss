@@ -1,0 +1,21 @@
+.main{
+  color: #3b3b3b;
+}
+
+.title{
+  text-align: center;
+  font-weight: 400;
+}
+
+.cardsGrid{
+  justify-content: center;
+
+  @media all and (min-width: 415px){
+    display: flex;
+  }
+
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
