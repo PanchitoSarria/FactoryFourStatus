@@ -3,8 +3,8 @@ import ApiNameCard from '../components/ApiNameCard'
 import Head from 'next/head'
 import styles from '../styles/Home.module.scss'
 
-const apiNames = ['accounts', 'assets', 'customers', 'datapoints', 'devices', 'documents', 'forms', 'invites', 'media', 'messages', 'namespaces', 'orders', 'patients', 'relationships', 'rules', 'templates', 'users', 'workflows']
-const refreshTime = 15000
+const API_NAME = ['accounts', 'assets', 'customers', 'datapoints', 'devices', 'documents', 'forms', 'invites', 'media', 'messages', 'namespaces', 'orders', 'patients', 'relationships', 'rules', 'templates', 'users', 'workflows']
+const REFRESH_TIME = 15000
 
 export default function Home() {
   const [apiList, setApiList] = useState([])
@@ -13,9 +13,11 @@ export default function Home() {
     try {
       const data = await fetch(`https://api.factoryfour.com/${apiName}/health/status`)
       const res = await data.json()
+      console.log(res)
       return {...res, 'name': apiName}
       
     } catch (error) {
+      console.log(error)
       return {
         "success": false,
         "message": "Error",
@@ -28,7 +30,7 @@ export default function Home() {
 
   useEffect(() => {
     const data = []
-    Promise.allSettled(apiNames.map(name => {
+    Promise.allSettled(API_NAME.map(name => {
         return apiFetch(name)
       })).
     then((results) => {
@@ -42,7 +44,7 @@ export default function Home() {
   useEffect(() => {
     const interval = setTimeout(() => {
       const data = []
-      Promise.allSettled(apiNames.map(name => {
+      Promise.allSettled(API_NAME.map(name => {
           return apiFetch(name)
         })).
       then((results) => {
@@ -51,9 +53,9 @@ export default function Home() {
         })
         setApiList([...data])
     })
-    }, refreshTime);
+    }, REFRESH_TIME);
 
-    return () => clearTimeout(interval)
+    return () => clearTimeout(interval) 
   }, [apiList])
 
   return (
