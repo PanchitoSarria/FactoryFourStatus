@@ -1,69 +1,27 @@
 import { useState, useEffect } from 'react'
+import useFetchApiStatus from '../hooks/useFetchApiStatus'
 import ApiNameCard from '../components/ApiNameCard'
 import Head from 'next/head'
 import styles from '../styles/Home.module.scss'
 
 const API_NAME = ['accounts', 'assets', 'customers', 'datapoints', 'devices', 'documents', 'forms', 'invites', 'media', 'messages', 'namespaces', 'orders', 'patients', 'relationships', 'rules', 'templates', 'users', 'workflows']
-const REFRESH_TIME = 15000
+const REFRESH_TIME = 12000
 
 export default function Home() {
   const [apiList, setApiList] = useState([])
 
-  const apiFetch = async (apiName) => {
-    try {
-      const data = await fetch(`https://api.factoryfour.com/${apiName}/health/status`)
-      const res = await data.json()
-      return {...res, 'name': apiName}
-      
-    } catch (error) {
-      return {
-        "success": false,
-        "message": "Error",
-        "hostname": "OUTAGE",
-        "time": '403 Forbidden',
-        'name': apiName
-      }
-    }
+  const asynFunc = async () => {
+    const data = await useFetchApiStatus(API_NAME)
+    setApiList([...data])
   }
-
+  
   useEffect(() => {
-    const asynFunc = async () => {
-      const data = []
-      const res = await Promise.allSettled(API_NAME.map(name => {
-        return apiFetch(name)
-        })).
-      then((results) => {
-        results.forEach((result, index) => {
-          data.push(result.value)
-        })
-        return data
-      })
-      setApiList([...res])
-    }
     asynFunc()
-    // Promise.allSettled(API_NAME.map(name => {
-    //     return apiFetch(name)
-    //   })).
-    // then((results) => {
-    //   results.forEach((result, index) => {
-    //     data.push(result.value)
-    //   })
-    //   setApiList([...data])
-    // })
   }, [])
 
   useEffect(() => {
     const interval = setTimeout(() => {
-      const data = []
-      Promise.allSettled(API_NAME.map(name => {
-          return apiFetch(name)
-        })).
-      then((results) => {
-        results.forEach((result, index) => {
-          data.push(result.value)
-        })
-        setApiList([...data])
-    })
+      asynFunc()
     }, REFRESH_TIME);
 
     return () => clearTimeout(interval) 
