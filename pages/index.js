@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import useFetchApiStatus from '../hooks/useFetchApiStatus'
+import useFetchApiStatus from '../hooks/useFetchApiStatus' // hook for fetching all the APIs with a Promise.allSettled call
 import ApiNameCard from '../components/ApiNameCard'
 import Head from 'next/head'
 import styles from '../styles/Home.module.scss'
@@ -15,10 +15,12 @@ export default function Home() {
     setApiList([...data])
   }
   
+  // first useEffect for first app mount
   useEffect(() => {
     asynFunc()
   }, [])
 
+  // second useEffect for refreshing the status of all APIs
   useEffect(() => {
     const interval = setTimeout(() => {
       asynFunc()
