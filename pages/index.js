@@ -13,11 +13,9 @@ export default function Home() {
     try {
       const data = await fetch(`https://api.factoryfour.com/${apiName}/health/status`)
       const res = await data.json()
-      console.log(res)
       return {...res, 'name': apiName}
       
     } catch (error) {
-      console.log(error)
       return {
         "success": false,
         "message": "Error",
@@ -29,16 +27,29 @@ export default function Home() {
   }
 
   useEffect(() => {
-    const data = []
-    Promise.allSettled(API_NAME.map(name => {
+    const asynFunc = async () => {
+      const data = []
+      const res = await Promise.allSettled(API_NAME.map(name => {
         return apiFetch(name)
-      })).
-    then((results) => {
-      results.forEach((result, index) => {
-        data.push(result.value)
+        })).
+      then((results) => {
+        results.forEach((result, index) => {
+          data.push(result.value)
+        })
+        return data
       })
-      setApiList([...data])
-    })
+      setApiList([...res])
+    }
+    asynFunc()
+    // Promise.allSettled(API_NAME.map(name => {
+    //     return apiFetch(name)
+    //   })).
+    // then((results) => {
+    //   results.forEach((result, index) => {
+    //     data.push(result.value)
+    //   })
+    //   setApiList([...data])
+    // })
   }, [])
 
   useEffect(() => {
