@@ -15,7 +15,7 @@ const apiFetch = async (apiName) => {
     }
 }
 
-const useFetchApiStatus = async (itemsArray) => {
+const FetchApiStatus = async (itemsArray) => {
   const data = []
   const res = await Promise.allSettled(itemsArray.map(name => {
     return apiFetch(name)
@@ -25,7 +25,7 @@ const useFetchApiStatus = async (itemsArray) => {
       data.push(result.value)
     })
   })
-  return data
+  return {data}
 }
 
-export default useFetchApiStatus
+export default FetchApiStatus
