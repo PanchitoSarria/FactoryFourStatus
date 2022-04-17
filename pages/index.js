@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import FetchApiStatus from '../libs/FetchApiStatus' // hook for fetching all the APIs with a Promise.allSettled call
+import useFetchApiStatus from '../libs/FetchApiStatus' // hook for fetching all the APIs with a Promise.allSettled call
 import ApiNameCard from '../components/ApiNameCard'
 import Head from 'next/head'
 import styles from '../styles/Home.module.scss'
@@ -11,7 +11,7 @@ export default function Home() {
   const [apiList, setApiList] = useState([])
 
   const asynFunc = async () => {
-    const {data} = await FetchApiStatus(API_NAME)
+    const {data} = await useFetchApiStatus(API_NAME)
     setApiList([...data])
   }
   
